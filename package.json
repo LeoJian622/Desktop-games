@@ -1,0 +1,23 @@
+{
+  "name": "desktop",
+  "version": "1.0.0",
+  "description": "prprprprpr....",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/LeoJian622/Desktop-games.git"
+  },
+  "author": "LLZYteam",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/LeoJian622/Desktop-games/issues"
+  },
+  "homepage": "https://github.com/LeoJian622/Desktop-games#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
