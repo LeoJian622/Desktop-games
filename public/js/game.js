@@ -26,9 +26,8 @@ app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope
 				return str.join("&");
 			}
 		};
-		$http.post('http://localhost:3000/api/user', form, postCfg).then(function(response) {
+		$http.post('/api/user', form, postCfg).then(function(response) {
 			$scope.isLogin = response.data;
-			console.log(response.data);
 			if (response.data.status) {
 				var url = "mainPage.html?name=" + $scope.name;
 				location.href = url;

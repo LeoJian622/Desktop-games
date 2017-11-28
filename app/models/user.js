@@ -77,7 +77,6 @@ function users() {
 		online: false
 	}];
 	this.Authentication = function(req) {
-		console.log(req.body.username);
 		for (var index in users) {
 			if (req.body.username == users[index].user && req.body.password == users[index].pwd && !users[index].online) {
 				return true;
