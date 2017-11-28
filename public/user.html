@@ -1,0 +1,45 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="anApp">
+    <head>
+        <meta charset="utf-8">
+        <title>桌游——用户主页</title>
+        <script src="components/angular/angular.js"></script>
+        <script src="js/game.js"></script>
+    </head>
+    <style>
+		body{ text-align:center} 
+		.div-show{ 
+			margin:0 auto;
+			background:rgba(255, 255, 0, 0.6);
+			border:1px solid #F00; 
+			width:600px; 
+			height:930px
+		}
+	</style>
+	<body bgcolor="green" ng-controller="myCtrl">
+	    <div class="div-show"> <!-- 这里最好用12分格法 -->
+	    	<table>
+	    		<tr>
+	    			<th>姓名：</th>
+	    			<th>{{name}}</th>
+	    		</tr>
+	    		<tr>
+	    			<th>昵称：</th>
+	    			<th>{{tell}}</th>
+	    		</tr>
+	    		<tr>
+	    			<th>密码：</th>
+	    			<th>{{passwd}}</th>
+	    		</tr>
+	    		<tr>
+	    			<th>游戏</th>
+	    			<th>胜率</th>
+	    		</tr>
+	    		<tr ng-repeat="item in user.game">
+	    			<th>{{item.name}}</th>
+	    			<th>{{item.winPower}}</th>
+	    		</tr>
+	    	</table>
+	    </div>
+ 	</body>
+</html>

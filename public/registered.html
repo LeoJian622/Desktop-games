@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="anApp">
+    <head>
+        <meta charset="utf-8">
+        <title>桌游——注册页面</title>
+        <script src="components/angular/angular.js"></script>
+        <script src="js/game.js"></script>
+    </head>
+ <body>
+    <div ng-controller="myCtrl">
+        <center>
+        	<form>
+				<table>
+					<tr>
+						<td>用户名:</td>
+						<td>
+							<input type="text" ng-model="rename" required>
+						</td>
+					</tr>
+					<tr>
+						<td>密码:</td>
+						<td>
+							<input type="password" placeholder="密码不能为空" ng-model="repasswd" required>
+						</td>
+					</tr>
+					<tr>
+						<td>确认密码:</td>
+						<td>
+							<input type="password" placeholder="其实你两次不一样我也不做判断的" ng-model="repasswd2" required>
+						</td>
+					</tr>
+					<tr>
+						<td>昵称:</td>
+						<td>
+							<input type="text" ng-model="retell" required>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button ng-click="registeredIt()">注册</button>
+						</td>
+						<td>
+							<button ng-click="out()">返回</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+        </center>
+    </div>
+  </body>
+</html>
