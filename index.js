@@ -14,9 +14,9 @@ var User       = require('./app/models/user.js'); //call user model
 var users      = new User();
 app.use(express.static(__dirname + '/public')); // return static source
 
-app.use(function(req, res) { //访问非静态资源返回的文件
-	res.sendFile(__dirname + '/public/login.html');
-});
+// app.use('/',function(req, res) { //访问非静态资源返回的文件
+// 	res.redirect('/login.html');
+// });
 
 //get the data from a POST
 app.use(bodyParser.urlencoded({
