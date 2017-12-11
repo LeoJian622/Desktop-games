@@ -1,0 +1,23 @@
+{
+  "name": "desktop",
+  "description": "prprprprpr....",
+  "main": "index.js",
+  "authors": [
+    "LLZYteam"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/LeoJian622/Desktop-games",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#1.3.0",
+    "bootstrap": "3.0.0"
+  }
+}

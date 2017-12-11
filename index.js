@@ -7,7 +7,7 @@
 var express    = require('express'); // call express
 var app        = express(); // define app using express
 var bodyParser = require('body-parser'); // configure app to use bodyParser()
-
+var io         = require('socket.io') //call socket.io
 var Card       = require('./app/models/card.js'); //call card model
 var cards      = new Card();
 var User       = require('./app/models/user.js'); //call user model
@@ -68,5 +68,9 @@ app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
-app.listen(port);
-console.log('Server has been started on port ' + port);
+var server = app.listen(port,function() { //启动服务器
+	console.log('Server  is on port ' + port + '!');
+});
+io.listen(server,function() { //启动服务器
+	console.log('io  is on port ' + port + '!');
+});
