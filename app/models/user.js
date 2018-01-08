@@ -1,89 +1,56 @@
+var fs = require('fs');
+
 function users() {
-	var users = [{
-		user: 'tgame1',
-		pwd: 'tgame1',
-		online: false
-	}, {
-		user: 'tgame2',
-		pwd: 'tgame2',
-		online: false
-	}, {
-		user: 'tgame3',
-		pwd: 'tgame3',
-		online: false
-	}, {
-		user: 'tgame4',
-		pwd: 'tgame4',
-		online: false
-	}, {
-		user: 'tgame5',
-		pwd: 'tgame5',
-		online: false
-	}, {
-		user: 'tgame6',
-		pwd: 'tgame6',
-		online: false
-	}, {
-		user: 'tgame7',
-		pwd: 'tgame7',
-		online: false
-	}, {
-		user: 'tgame8',
-		pwd: 'tgame8',
-		online: false
-	}, {
-		user: 'tgame9',
-		pwd: 'tgame9',
-		online: false
-	}, {
-		user: 'tgame10',
-		pwd: 'tgame10',
-		online: false
-	}, {
-		user: 'tgame11',
-		pwd: 'tgame11',
-		online: false
-	}, {
-		user: 'tgame12',
-		pwd: 'tgame12',
-		online: false
-	}, {
-		user: 'tgame13',
-		pwd: 'tgame13',
-		online: false
-	}, {
-		user: 'tgame14',
-		pwd: 'tgame14',
-		online: false
-	}, {
-		user: 'tgame15',
-		pwd: 'tgame15',
-		online: false
-	}, {
-		user: 'tgame16',
-		pwd: 'tgame16',
-		online: false
-	}, {
-		user: 'tgame17',
-		pwd: 'tgame17',
-		online: false
-	}, {
-		user: 'tgame18',
-		pwd: 'tgame18',
-		online: false
-	}, {
-		user: 'tgame19',
-		pwd: 'tgame19',
-		online: false
-	}];
-	this.Authentication = function(req) {
-		for (var index in users) {
-			if (req.body.username == users[index].user && req.body.password == users[index].pwd && !users[index].online) {
-				return true;
+	
+	var filepath = 'app/data/';
+	var filename = 'user.json';
+
+	var users = JSON.parse(fs.readFileSync(filepath + filename));
+
+	//user  authentication
+	this.authenticationUser = function(data) {
+		returnData = {
+			messages:'用户名不存在！',
+			status:false
+		};
+		for (var i in users) {
+			if (data.username == users[i].username) {
+				if (data.password == users[i].password) {
+					 if (!users[i].online) {
+					 	users[i].online = true;
+					 	returnData.messages = '登录成功';
+					 	returnData.status = true;
+					 } else {
+					 	returnData.messages = '用户已登录!'
+					 }
+				} else {
+					returnData.messages = '密码错误！';
+				}
 			}
 		}
-		return false;
+		return returnData;
+	};
+
+	//register 
+	this.addUser = function(data) {
+		for (var i in users) {
+			if (data.username == users[i].username) {
+				return {
+					messages: '用户名已被注册！',
+					status: false,
+				};
+			}
+		}
+		data.online = false;
+		users.push(data);
+		fs.writeFileSync(filepath + filename, JSON.stringify(users, null, 4));
+		users[users.length - 1].online = true;
+		return {
+			messages: '注册成功！',
+			status: true,
+		};
 	}
 }
+
 
 module.exports = users;

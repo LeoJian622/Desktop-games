@@ -7,7 +7,6 @@
 var express    = require('express'); // call express
 var app        = express(); // define app using express
 var bodyParser = require('body-parser'); // configure app to use bodyParser()
-var io         = require('socket.io') //call socket.io
 var Card       = require('./app/models/card.js'); //call card model
 var cards      = new Card();
 var User       = require('./app/models/user.js'); //call user model
@@ -36,14 +35,11 @@ var router     = express.Router(); // get an instance of the express Router
 // ----------------------------------------------------
 router.route('/cards')
 
-	// get single card (accessed at GET http://localhost:3000/api/cards)
+	// get radom single card (accessed at GET http://localhost:3000/api/cards)
 	.get(function(req, res) {
 		res.json(cards.drawCard());
 	})
-	// brocast card data to all
-	.post(function(req, res){
-		res.json({messages:'socket.io brocast!'});
-	})
+
 	// rest all the cards (accessed at PUT http://localhost:3000/api/cards)
 	.put(function(req, res){
 		if(cards.resetCards()){
@@ -53,10 +49,24 @@ router.route('/cards')
 		}
 	});
 
+router.route('/cards/:cardid')	
+	// brocast card data to all(accessed at GET http://localhost:3000/api/cards/cardid:)
+	.get(function(req, res){
+		res.json({test:req.body});
+		//res.json({messages:'socket.io brocast!'});
+	})
+
 router.route('/user')
-	//Authentication user and password (accessed at POST http://localhost:3000/api/user)
+	//Authentication user and password (accessed at GET http://localhost:3000/api/user/username:)
+	.get(function(req, res) {
+		var result = users.authenticationUser(req.body);
+		res.json(result);
+	})
+
+	//register user and password (accessed at POST http://localhost:3000/api/user)
 	.post(function(req, res){
-		res.json(users.Authentication(req)?{messages:'Login succeed!',status:users.Authentication(req)}:{messages:'Login failed!',status:users.Authentication(req)});
+		var result = users.addUser(req.body);
+		res.json(result);
 	})
 
 
@@ -71,6 +81,12 @@ app.use('/api', router);
 var server = app.listen(port,function() { //启动服务器
 	console.log('Server  is on port ' + port + '!');
 });
-io.listen(server,function() { //启动服务器
-	console.log('io  is on port ' + port + '!');
+var io = require('socket.io')(server);
+
+io.sockets.on('connection',function(socket){
+    console.log('User connected');
+    socket.on('disconnect',function(){
+        console.log('User disconnected');
+    });
 });
+

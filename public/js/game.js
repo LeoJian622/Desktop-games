@@ -1,39 +1,31 @@
 var app = angular.module('anApp', []); //定义angularjs module
 app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope, $location) { //定义控制器myCtrl 注入$http $scope服务
 
-	//	$scope.url = "http://localhost:3000";	//写入连接端口
-	//	$http.get(url).then(function(response) {	//调用$http服务获取端口传输文件
-	//		$scope.sel = response.data;	//获取返回的json并赋值给$scope.sel
-	//	}, function(errResponse) {	//当取值失败时
-	//		alert("error");
-	//	});
+	$http.defaults.headers = {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		};
+	//header配置
+	var transformRequestCfg = {
+		transformRequest: function(obj) {
+			var str = [];
+			for (var s in obj) {
+				str.push(encodeURIComponent(s) + "=" + encodeURIComponent(obj[s]));
+			}
+			return str.join("&");
+		}
+	};
+
+	var userUrl = 'http://localhost:3000/api/user';
 
 	//跳转到主页面   time:2017年11月28日17:10:34 账号验证
 	$scope.sure = function() {
-		var form = {
-			username: $scope.name,
-			password: $scope.passwd
-		};
-		var postCfg = {
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			transformRequest: function(obj) {
-				var str = [];
-				for (var s in obj) {
-					str.push(encodeURIComponent(s) + "=" + encodeURIComponent(obj[s]));
-				}
-				return str.join("&");
-			}
-		};
-		$http.post('/api/user', form, postCfg).then(function(response) {
-			$scope.isLogin = response.data;
+		$http.get(userUrl + "?" + $scope.name + "&" + $scope.passwd).then(function(response) {
+			alert(response.data.messages);
 			if (response.data.status) {
+				$scope.isLogin = response.data.status;
 				var url = "mainPage.html?name=" + $scope.name;
 				location.href = url;
-			} else {
-				alert("账号或密码错误！");
-			}
+			} 
 		});
 	}
 
@@ -82,11 +74,13 @@ app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope
 			"password": $scope.repasswd,
 			"tell": $scope.retell
 		};
-		$http.post($scope.url, form).then(function(response) {
-			alert("注册成功！");
-			$scope.name = $scope.rename;
-			var url = "mainPage.html?name=" + $scope.name;
-			location.href = url;
+		$http.post(userUrl, form, transformRequestCfg).then(function(response) {
+			alert(response.data.messages);
+			if (response.data.status) {
+				$scope.name = $scope.rename;
+				var url = "mainPage.html?name=" + $scope.tell;
+				location.href = url;
+			}
 		});
 	};
 
