@@ -1,7 +1,7 @@
-var app = angular.module('anApp', []); //定义angularjs module
-app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope, $location) { //定义控制器myCtrl 注入$http $scope服务
+var app = angular.module('anApp', ['angular-md5']); //定义angularjs module
+app.controller('myCtrl', ['$http', '$scope', '$location','md5', function($http, $scope, $location, md5) { //定义控制器myCtrl 注入$http $scope服务
 
-	$http.defaults.headers = {
+	$http.defaults.headers.post = {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		};
 	//header配置
@@ -19,7 +19,7 @@ app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope
 
 	//跳转到主页面   time:2017年11月28日17:10:34 账号验证
 	$scope.sure = function() {
-		$http.get(userUrl + "?" + $scope.name + "&" + $scope.passwd).then(function(response) {
+		$http.get(userUrl + "/" + $scope.name + "/" + md5.createHash($scope.passwd)).then(function(response) {
 			alert(response.data.messages);
 			if (response.data.status) {
 				$scope.isLogin = response.data.status;
@@ -44,8 +44,14 @@ app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope
 
 	//退出到登陆页
 	$scope.out = function() {
-		var url = "login.html";
-		location.href = url;
+		$http.put(userUrl + "/" + $scope.name).then(function(response) {
+			alert(response.data.messages);
+			if (!response.data.status) {
+				$scope.isLogin = response.data.status;
+				var url = "login.html";
+				location.href = url; 
+			} 
+		});
 	};
 
 	//到用户主页
@@ -71,7 +77,7 @@ app.controller('myCtrl', ['$http', '$scope', '$location', function($http, $scope
 	$scope.registeredIt = function() {
 		var form = {
 			"username": $scope.rename,
-			"password": $scope.repasswd,
+			"password": md5.createHash($scope.repasswd),
 			"tell": $scope.retell
 		};
 		$http.post(userUrl, form, transformRequestCfg).then(function(response) {

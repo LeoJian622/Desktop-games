@@ -50,6 +50,20 @@ function users() {
 			status: true,
 		};
 	}
+
+	//loginout
+	this.loginout = function(data){
+		console.log(data);
+		for (var i in users) {
+			if (data.username == users[i].username) {
+				users[i].online = false;
+				return {
+					messages: '账号已退出！',
+					status: false,
+				};
+			}
+		}
+	};
 }
 
 
